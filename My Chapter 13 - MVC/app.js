@@ -10,10 +10,10 @@ import express from "express";
 // const {hostRouter} = require("./routes/hostRouter")
 // const rootDir = require("./utils/pathUtil");
 
-import {userRouter} from "./routes/userRouter.js";
-import { hostRouter } from "./routes/hostRouter.js";
 import rootDir from "./utils/pathUtil.js";
 import {notFoundPage} from './controllers/errorController.js'
+import { hostRouter } from "./routes/hostRouter.js";
+import { storeRouter } from "./routes/storeRouter.js";
 
 const app = express();
 
@@ -21,7 +21,7 @@ app.set('view engine', 'ejs');
 app.set('views', 'views');
 
 app.use(express.urlencoded());
-app.use(userRouter);
+app.use(storeRouter);
 app.use("/host", hostRouter);
 
 app.use(express.static(path.join(rootDir, 'public')))

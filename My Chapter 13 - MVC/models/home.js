@@ -43,6 +43,7 @@ class Home {
 
       try {
         const file = await fs.readFile(path.join(dirPath, 'homes.json'))
+        console.log('uhisa ef parsed file', JSON.parse(file))
         return JSON.parse(file);
       } catch (err) {
         console.log('Error in reading file in fetch Homes function in Home Model:', err);

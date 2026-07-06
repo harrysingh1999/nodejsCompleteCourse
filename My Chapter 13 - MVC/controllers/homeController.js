@@ -3,8 +3,9 @@ import Home from '../models/home.js'
 
 
 export const getHomes = async (req, res, next) => {
+  console.log('gethomes called log first')
   const registeredHomes = await Home.fetchAllHomes();
-  console.log('registered Homes in home controller..........', registeredHomes);
+  console.log('gethomes called', registeredHomes)
   res.render('home', {registeredHomes: registeredHomes, pageTitle: 'airbnb Home', currentPage: 'Home'});
 }
 
