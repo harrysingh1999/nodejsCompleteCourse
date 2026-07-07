@@ -27,12 +27,22 @@ class Favourite {
 
     try {
       const file = await fs.readFile(favouriteHomesPath)
-      const parsedData =  JSON.parse(file)
-     
+      const parsedData = JSON.parse(file)
+
       return parsedData;
     } catch (err) {
       console.log('Error in reading file in fetch Homes function in Home Model:', err);
       return [];
+    }
+  }
+
+   static async deleteFavouriteHome(homeId) {
+    const favouriteHomes = await Favourite.fetchAllFavouriteHomes()
+    const updatedFavouriteHomes = favouriteHomes.filter(rh => rh !== homeId)
+    try {
+      await fs.writeFile(favouriteHomesPath, JSON.stringify(updatedFavouriteHomes))
+    } catch (err) {
+      console.log('error while deleting favourite home in Favourite Model', err)
     }
   }
 

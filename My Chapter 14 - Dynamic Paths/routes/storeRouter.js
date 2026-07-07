@@ -9,11 +9,14 @@ export const storeRouter = express.Router();
 import { getIndex, getHomes,
    getFavouriteList,
    getBookings, getHomeDetails, 
-   postAddToFavourite } from "../controllers/storeController.js";
+   postAddToFavourite, 
+   postRemoveFromFavourite} from "../controllers/storeController.js";
 
 storeRouter.get("/", getIndex);
 storeRouter.get("/homes", getHomes);
 storeRouter.get("/homes/:homeId", getHomeDetails);
 storeRouter.get("/favourites", getFavouriteList);
 storeRouter.post("/favourites", postAddToFavourite);
+storeRouter.post("/favourites/delete/:homeId", postRemoveFromFavourite);
+
 storeRouter.get("/bookings", getBookings);

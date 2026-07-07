@@ -57,5 +57,10 @@ export const getFavouriteList = async (req, res, next) => {
 export const postAddToFavourite = (req, res, next) => {
   Favourite.addToFavourite(req.body.id)
   res.redirect('/favourites')
+}
 
+export const postRemoveFromFavourite = (req, res, next) => {
+  const homeId = req.params.homeId;
+  Favourite.deleteFavouriteHome(homeId);
+  res.redirect("/favourites");
 }

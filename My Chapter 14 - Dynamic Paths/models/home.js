@@ -6,6 +6,8 @@ import fs from 'fs/promises' // using promises fs that is recommended and best a
 
 import rootDir from '../utils/pathUtil.js';
 
+const homeJSONPath = path.join(rootDir, 'models/data', 'homes.json')
+
 class Home {
   constructor(houseName, price, location, rating, photoUrl) {
     this.houseName = houseName;
@@ -16,32 +18,26 @@ class Home {
   }
 
  async addHome() {
-    const filePath = path.join(rootDir, 'models/data', 'homes.json')
     
-    let registeredHomes = Home.fetchAllHomes();
+    let registeredHomes = await Home.fetchAllHomes();
 
-      try {
-        let fileData = await fs.readFile(filePath)
-        registeredHomes = JSON.parse(fileData);
-      } catch (err) {
-        console.log('Error in reading file data in addHomes function in Home Model:', err);
-        registeredHomes = []
-      }
-
-    console.log('Registered Homes in addHome:', registeredHomes);
-    const finalData = [...registeredHomes, this]
-
+    if(this.id){
+      registeredHomes = registeredHomes.map(home => this.id === home.id ? this : home)
+    }else {
+      this.id = crypto.randomUUID();
+      registeredHomes.push(this)
+    }
+    
     try {
-      await fs.writeFile(filePath, JSON.stringify(finalData))
+      await fs.writeFile(homeJSONPath, JSON.stringify(registeredHomes))
     } catch (err) {
       console.log('Error in writing file in addHomes function in Home Model:', err);
     }
   }
 
   static async fetchAllHomes() {
-    const dirPath = path.join(rootDir, 'models/data')
       try {
-        const file = await fs.readFile(path.join(dirPath, 'homes.json'))
+        const file = await fs.readFile(homeJSONPath)
         return JSON.parse(file);
       } catch (err) {
         console.log('Error in reading file in fetch Homes function in Home Model:', err);
@@ -55,7 +51,15 @@ class Home {
      )
   }
 
-
+  static async deleteHome(homeId) {
+     const registeredHomes = await Home.fetchAllHomes()
+     const updatedHomes = registeredHomes.filter(rh => rh.id !== homeId)
+     try{
+       await fs.writeFile(homeJSONPath, JSON.stringify(updatedHomes))
+     }catch (err) {
+      console.log('error while deleting home in Home Model', err)
+     }
+  }
 
 }
 
