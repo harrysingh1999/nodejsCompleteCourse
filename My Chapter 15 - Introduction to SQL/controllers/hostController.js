@@ -1,9 +1,8 @@
 import Home from '../models/home.js';
 
 export const getAddHome = (req, res, next) => {
-  res.render('host/edit-home', { 
-    pageTitle: 'Add Home to airbnb',
-    currentPage: 'addHome',
+  res.render('host/edit-home', { pageTitle: 'Add Home to airbnb',
+     currentPage: 'addHome',
     editing: false,
     });
 }
@@ -13,14 +12,15 @@ export const getEditHome = async (req, res, next) => {
   const editing = req.query.editing === 'true';
 
   const home = await Home.findHome(homeId)
+  console.log('homes', home)
 
-  if (!home) {
+  if (!home[0][0]) {
       console.log("Home not found for editing.");
       return res.redirect("/host/host-home-list");
    }
 
   res.render('host/edit-home', { 
-    home: home,
+    home: home[0][0],
     pageTitle: 'Edit your Home',
     currentPage: 'host-homes',
     editing: editing
@@ -30,7 +30,7 @@ export const getEditHome = async (req, res, next) => {
 export const getHostHomes = async (req, res, next) => {
   const registeredHomes = await Home.fetchAllHomes();
   res.render("host/host-home-list", {
-    registeredHomes: registeredHomes,
+    registeredHomes: registeredHomes[0],  
     pageTitle: "Host Homes List",
     currentPage: "host-homes",
   })
@@ -39,18 +39,16 @@ export const getHostHomes = async (req, res, next) => {
 export const postAddHome = (req, res, next) => {
   console.log('Home Registration successful for:', req.body);
   // registeredHomes.push(req.body);
-  const { houseName, price, location, rating, photoUrl } = req.body;
-  const newHome = new Home(houseName, price, location, rating, photoUrl);
+  const { houseName, price, location, rating, photoUrl, description } = req.body;
+  const newHome = new Home(houseName, price, location, rating, photoUrl, description);
   newHome.addHome();
   res.redirect('/host/host-home-list')
-  // res.render('host/home-added', { pageTitle: 'Home Added Successfully', currentPage: 'homeAdded' });
 }
 
-export const postEditHome = (req, res, next) => {
-  console.log('Home Registration successful for:', req.body);
+export const postEditHome = async (req, res, next) => {
   // registeredHomes.push(req.body);
-  const { id, houseName, price, location, rating, photoUrl } = req.body;
-  const newHome = new Home(houseName, price, location, rating, photoUrl);
+  const { id, houseName, price, location, rating, photoUrl, description } = req.body;
+  const newHome = new Home(houseName, price, location, rating, photoUrl, description);
   newHome.id = id
   newHome.addHome();
   res.redirect('/host/host-home-list')
