@@ -7,14 +7,16 @@
     {
       "type": "node",
       "request": "launch",
-      "name": "Launch Program",
+      "name": "Launch authController.js",
       "skipFiles": [
         "<node_internals>/**"
       ],
-      "program": "${workspaceFolder}/Chapter 8 - Errors and Debugging/user.js",
-      "restart": true,
-      "runtimeExecutable": "nodemon",
-      "console": "integratedTerminal"
+      "program": "${workspaceFolder}/My Chapter 19 -  Authentication&Authorization/app.js",
+      "cwd": "${workspaceFolder}",
+      "restart": false,
+      "runtimeExecutable": "node",
+      "console": "integratedTerminal",
+      "internalConsoleOptions": "neverOpen"
     }
   ]
 }

@@ -51,7 +51,7 @@ app.use((req, res, next) => {
 app.use(authRouter);
 app.use(storeRouter);
 app.use("/host", (req, res, next) => {
-  if (res.isLoggedIn) {
+  if (req.isLoggedIn) {
     next();
   } else {
     res.redirect("/login");

@@ -47,7 +47,7 @@ export const getHostHomes = async (req, res) => {
   });
 };
 
-export const postAddHome = (req, res) => {
+export const postAddHome = async (req, res) => {
   console.log("Home Registration successful for:", req.body);
   // registeredHomes.push(req.body);
   const { houseName, price, location, rating, photoUrl, description } =
@@ -62,7 +62,7 @@ export const postAddHome = (req, res) => {
     description,
   });
 
-  newHome.save();
+  await newHome.save();
   res.redirect("/host/host-home-list");
 };
 
