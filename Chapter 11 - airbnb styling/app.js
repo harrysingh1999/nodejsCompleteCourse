@@ -15,6 +15,11 @@ app.use(express.urlencoded());
 app.use(userRouter);
 app.use("/host", hostRouter);
 
+app.use('/package.json', (req, res, next) => {
+  res.sendFile(path.join(rootDir, 'package.json'))
+  console.log('handled package json route')
+} )
+
 app.use(express.static(path.join(rootDir, 'public')))
 
 app.use((req, res, next) => {
